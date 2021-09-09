@@ -9,7 +9,7 @@ from passlib.context import CryptContext
 from starlette import status
 
 from models.user import UserInDB, User, UserCreate, UserActionsHistory, AccountDetails, UserEdit
-from services.db.userDB import get_user_from_username_db, create_new_user_to_db, update_user_to_db, create_user_history, \
+from services.db.userDB import get_user_from_username_db, create_new_user_to_db, update_user_to_db, \
     get_user_from_id, update_password_to_db
 from config import settings
 
@@ -86,14 +86,7 @@ async def create_new_user(user: UserCreate) -> UserInDB:
     user_in = UserInDB(hashed_password=hashed_password, **user.dict())
     user_in.key = str(uuid.uuid4())
     created_user = await create_new_user_to_db(user_in)
-    await create_user_history(
-        UserActionsHistory(
-            username=created_user.username,
-            type='join',
-            description=f'Joined the {settings.PROJECT_NAME}.',
-            time=datetime.now().isoformat()
-        )
-    )
+
     return created_user
 
 
@@ -101,14 +94,7 @@ async def update_user_fields(updateuser: UserEdit, user: User) -> Optional[UserI
     userindb = await get_user_from_id(user.key)
     userindb.accounts.updatedAt = datetime.now().isoformat()
     useroutdb = await update_user_to_db(User(**updateuser.dict()), userindb)
-    await create_user_history(
-        UserActionsHistory(
-            username=useroutdb.username,
-            type='update_profile',
-            description=f'Updated the profile.',
-            time=datetime.now().isoformat()
-        )
-    )
+
     return useroutdb
 
 

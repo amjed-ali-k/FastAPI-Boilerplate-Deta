@@ -1,7 +1,8 @@
 import fastapi
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
-from api import weather, auth, userhistory, files
+from api import auth
+import uvicorn
 from views import home
 from config import settings
 
@@ -34,6 +35,6 @@ def configure_routing():
 
 if __name__ == '__main__':
     configure()
-    # uvicorn.run("main:app", port=8000, host="127.0.0.1", reload=True)
+    uvicorn.run("main:app", port=8000, host="127.0.0.1", reload=True)
 else:
     configure()

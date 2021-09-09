@@ -13,3 +13,4 @@ pydantic[email]
 hurry.filesize==0.9
 aiofiles
 shortuuid
+uvicorn
