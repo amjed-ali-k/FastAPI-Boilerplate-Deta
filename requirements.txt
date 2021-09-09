@@ -10,7 +10,5 @@ starlette
 deta
 bcrypt
 pydantic[email]
-hurry.filesize
-aiofiles
 shortuuid
 uvicorn
